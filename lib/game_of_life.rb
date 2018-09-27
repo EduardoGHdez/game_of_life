@@ -14,7 +14,8 @@ class GameOfLife
     def randomCell
         row = Random.rand(@board.size-1)
         col = Random.rand(@board.size-1)
-        @board.grid[row, col].actual_state = 1
+        @board.grid[row, col].actual_state = 1    
+        return row, col
     end
 
     def tick
@@ -82,11 +83,18 @@ class GameOfLife
         game.selectCell(row:6, col:9)
         (1..50).step(1).each{ |x| game.randomCell}
         game.display
-        puts "Press enter to continue ticking, 'n' to end"
-        while ($stdin.gets.chomp) != 'n'
+        puts "Press enter to continue ticking, 's' to select another cell or 'n' to end"
+        option = ($stdin.gets.chomp)
+        while option != 'n'
+            if option == 's'
+                puts "row, col ?"
+                a, b = gets.split.map(&:to_i)
+                game.selectCell(row: a, col: b)
+            end
             game.display
             game.tick
-            puts "Press enter to continue ticking, 'n' to end"
+            puts "Press enter to continue ticking, 's' to select another cell or 'n' to end"
+            option = ($stdin.gets.chomp)
         end
     end
 end
